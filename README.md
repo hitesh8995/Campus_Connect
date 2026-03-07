@@ -1,3 +1,4 @@
+
 # CAMPUS-CONNECT
 
 A comprehensive, production-ready college event management platform built with the MERN stack. Designed for engineering colleges to manage clubs, events, registrations, attendance, payments, and student reviews — all in one place.
@@ -356,3 +357,7 @@ npm run build
 ## License
 
 MIT License — free to use for your college or organization.
+=======
+# Campus_Connect
+Campus Connect is a production-ready MERN stack platform for managing college clubs, events, registrations, QR tickets, payments, attendance, and student reviews.
+
