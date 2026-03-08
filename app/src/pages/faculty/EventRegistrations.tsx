@@ -62,7 +62,7 @@ export default function EventRegistrations() {
         reg.attended ? 'Yes' : 'No'
       ];
     });
-    
+
     const csv = [headers.join(','), ...rows.map(r => r.map(field => `"${field}"`).join(','))].join('\n');
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
@@ -128,7 +128,7 @@ export default function EventRegistrations() {
           {filteredRegistrations.map((reg) => {
             const user = typeof reg.userId === 'object' ? reg.userId : null;
             if (!user) return null;
-            
+
             return (
               <Card key={reg.id}>
                 <CardContent className="p-4">

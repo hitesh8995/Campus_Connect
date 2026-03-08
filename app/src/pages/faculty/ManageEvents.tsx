@@ -4,11 +4,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { eventsAPI } from '../../services/api';
+import { useAuth } from '../../contexts/AuthContext';
 import type { Event } from '../../types';
 import { Calendar, Users, Loader2, Plus } from 'lucide-react';
 import { format } from 'date-fns';
 
 export default function ManageEvents() {
+  const { user } = useAuth();
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -19,7 +21,8 @@ export default function ManageEvents() {
   const fetchEvents = async () => {
     try {
       setLoading(true);
-      const response = await eventsAPI.getEvents({ limit: 100 });
+      const clubId = typeof user?.clubId === 'object' ? (user.clubId as any)?._id || (user.clubId as any)?.id : user?.clubId;
+      const response = await eventsAPI.getEvents({ clubId, status: 'all', limit: 100 });
       setEvents(response.data.events || []);
     } catch (error) {
       console.error('Error fetching events:', error);

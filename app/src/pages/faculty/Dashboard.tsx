@@ -4,11 +4,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { eventsAPI } from '../../services/api';
+import { useAuth } from '../../contexts/AuthContext';
 import type { Event } from '../../types';
 import { Calendar, Plus, Users, Loader2 } from 'lucide-react';
 import { format } from 'date-fns';
 
 export default function FacultyDashboard() {
+  const { user } = useAuth();
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({ total: 0, pending: 0, approved: 0 });
@@ -20,7 +22,8 @@ export default function FacultyDashboard() {
   const fetchEvents = async () => {
     try {
       setLoading(true);
-      const response = await eventsAPI.getEvents({ limit: 100 });
+      const clubId = typeof user?.clubId === 'object' ? (user.clubId as any)?._id || (user.clubId as any)?.id : user?.clubId;
+      const response = await eventsAPI.getEvents({ clubId, status: 'all', limit: 100 });
       const myEvents = response.data.events || [];
       setEvents(myEvents.slice(0, 5));
       setStats({

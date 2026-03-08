@@ -23,3 +23,8 @@ Thumbs.db
 # Editor files
 .vscode/
 .idea/
+
+
+logs/
+*.log
+app/backend/logs/

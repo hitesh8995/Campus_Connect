@@ -33,7 +33,7 @@ router.get('/', optionalAuth, async (req, res) => {
     const query = {};
 
     // Status filter
-    if (status) query.status = status;
+    if (status && status !== 'all') query.status = status;
     if (status === 'approved') query.isPublished = true;
 
     // Category filter
