@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { eventsAPI } from '../../services/api';
 import type { Registration, Event } from '../../types';
-import { ArrowLeft, Users, Download, Search, Loader2, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Users, Download, Search, Loader2, CheckCircle, Building2 } from 'lucide-react';
 import { format } from 'date-fns';
 
 export default function EventRegistrations() {
@@ -14,6 +14,7 @@ export default function EventRegistrations() {
   const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
 
   useEffect(() => {
@@ -25,11 +26,27 @@ export default function EventRegistrations() {
   const fetchRegistrations = async () => {
     try {
       setLoading(true);
+      setError(null);
+
+      // Check if faculty is assigned to a club before making the API call
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      if (!user.clubId) {
+        setError('not_assigned');
+        setLoading(false);
+        return;
+      }
+
       const response = await eventsAPI.getEventRegistrations(eventId!);
       setRegistrations(response.data.registrations || []);
       setEvent(response.data.event);
-    } catch (error) {
-      console.error('Error fetching registrations:', error);
+    } catch (err: any) {
+      console.error('Error fetching registrations:', err);
+      const status = err?.response?.status;
+      if (status === 403 || status === 401) {
+        setError('not_assigned');
+      } else {
+        setError('fetch_failed');
+      }
     } finally {
       setLoading(false);
     }
@@ -49,7 +66,7 @@ export default function EventRegistrations() {
   const exportCSV = () => {
     const headers = ['Name', 'Email', 'Roll No', 'Department', 'Section', 'Year', 'Ticket ID', 'Status', 'Attended'];
     const rows = registrations.map((reg) => {
-      const user = typeof reg.userId === 'object' ? reg.userId : {};
+      const user = (typeof reg.userId === 'object' ? reg.userId : {}) as any;
       return [
         user.name || '',
         user.email || '',
@@ -76,6 +93,57 @@ export default function EventRegistrations() {
     return (
       <div className="flex items-center justify-center h-64">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (error === 'not_assigned') {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <Button variant="outline" size="icon" asChild>
+            <Link to="/faculty/events">
+              <ArrowLeft className="h-4 w-4" />
+            </Link>
+          </Button>
+          <h1 className="text-3xl font-bold">Event Registrations</h1>
+        </div>
+        <Card>
+          <CardContent className="p-12 flex flex-col items-center justify-center text-center space-y-4">
+            <Building2 className="h-16 w-16 text-muted-foreground" />
+            <h2 className="text-xl font-semibold">Not Assigned to Any Club</h2>
+            <p className="text-muted-foreground max-w-sm">
+              You are not assigned to any club, so you cannot view event registrations.
+              Please contact the admin to get assigned to a club.
+            </p>
+            <Button variant="outline" asChild>
+              <Link to="/faculty/dashboard">Go to Dashboard</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (error === 'fetch_failed') {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <Button variant="outline" size="icon" asChild>
+            <Link to="/faculty/events">
+              <ArrowLeft className="h-4 w-4" />
+            </Link>
+          </Button>
+          <h1 className="text-3xl font-bold">Event Registrations</h1>
+        </div>
+        <Card>
+          <CardContent className="p-12 flex flex-col items-center justify-center text-center space-y-4">
+            <Users className="h-16 w-16 text-muted-foreground" />
+            <h2 className="text-xl font-semibold">Failed to Load Registrations</h2>
+            <p className="text-muted-foreground">Something went wrong while fetching registrations.</p>
+            <Button onClick={fetchRegistrations}>Try Again</Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
