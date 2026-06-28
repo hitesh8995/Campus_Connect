@@ -92,54 +92,182 @@ A comprehensive, production-ready college event management platform built with t
 ## Project Structure
 
 ```
-CAMPUS-CONNECT/
-├── app/                           # React + TypeScript Frontend
-│   ├── src/
-│   │   ├── components/            # Reusable UI components
-│   │   ├── contexts/              # React contexts (AuthContext)
-│   │   ├── layouts/               # Role-based layouts
-│   │   │   ├── AdminLayout.tsx
-│   │   │   ├── FacultyLayout.tsx
-│   │   │   ├── CoordinatorLayout.tsx
-│   │   │   └── StudentLayout.tsx
-│   │   ├── pages/
-│   │   │   ├── auth/              # Login, Signup, OTP, Password Reset
-│   │   │   ├── admin/             # Dashboard, ManageUsers, ManageClubs, etc.
-│   │   │   ├── faculty/           # Dashboard, CreateEvent, ManageClub, ManageEvents
-│   │   │   ├── coordinator/       # Dashboard, Attendance, VerifyTicket
-│   │   │   ├── student/           # Dashboard, MyRegistrations, MyTickets, MyReviews
-│   │   │   ├── EventDetails.tsx   # Public event page with reviews
-│   │   │   └── Events.tsx
-│   │   ├── services/
-│   │   │   └── api.ts             # Axios API service (authAPI, adminAPI, facultyAPI, ...)
-│   │   └── types/                 # TypeScript type definitions
-│   └── package.json
-│
-└── app/backend/                   # Node.js + Express Backend
-    ├── models/
-    │   ├── User.js
-    │   ├── Club.js
-    │   ├── Event.js               # includes eventEndDate for multi-day events
-    │   ├── Registration.js
-    │   ├── Payment.js
-    │   ├── Review.js
-    │   ├── OTP.js
-    │   └── AuditLog.js
-    ├── routes/
-    │   ├── auth.routes.js
-    │   ├── admin.routes.js        # Superadmin-only routes
-    │   ├── faculty.routes.js      # Faculty coordinator management routes
-    │   ├── event.routes.js
-    │   ├── registration.routes.js
-    │   ├── coordinator.routes.js
-    │   ├── review.routes.js
-    │   ├── payment.routes.js
-    │   ├── user.routes.js
-    │   └── club.routes.js
-    ├── middleware/                # auth, error, logger middleware
-    ├── utils/                    # email, JWT, Razorpay, audit utilities
-    ├── server.js
-    └── package.json
+Directory structure:
+└── hitesh8995-campus_connect/
+    ├── README.md
+    ├── DATABASE_SCHEMA.md
+    ├── DEPLOYMENT_GUIDE.md
+    ├── PROJECT_SUMMARY.md
+    ├── requirements.txt
+    ├── setup.sh
+    ├── UML_Diagrams.md
+    └── app/
+        ├── README.md
+        ├── components.json
+        ├── eslint.config.js
+        ├── index.html
+        ├── package.json
+        ├── postcss.config.js
+        ├── tailwind.config.js
+        ├── tsconfig.app.json
+        ├── tsconfig.json
+        ├── tsconfig.node.json
+        ├── vite.config.ts
+        ├── .env.example
+        ├── backend/
+        │   ├── fix-accounts.js
+        │   ├── package.json
+        │   ├── server.js
+        │   ├── .env.example
+        │   ├── middleware/
+        │   │   ├── auth.middleware.js
+        │   │   ├── error.middleware.js
+        │   │   └── logger.middleware.js
+        │   ├── models/
+        │   │   ├── AuditLog.js
+        │   │   ├── Club.js
+        │   │   ├── Event.js
+        │   │   ├── index.js
+        │   │   ├── OTP.js
+        │   │   ├── Payment.js
+        │   │   ├── Registration.js
+        │   │   ├── Review.js
+        │   │   └── User.js
+        │   ├── routes/
+        │   │   ├── admin.routes.js
+        │   │   ├── auth.routes.js
+        │   │   ├── club.routes.js
+        │   │   ├── coordinator.routes.js
+        │   │   ├── event.routes.js
+        │   │   ├── faculty.routes.js
+        │   │   ├── payment.routes.js
+        │   │   ├── registration.routes.js
+        │   │   ├── review.routes.js
+        │   │   └── user.routes.js
+        │   ├── scripts/
+        │   │   └── inspect-db.js
+        │   └── utils/
+        │       ├── audit.utils.js
+        │       ├── email.service.js
+        │       ├── index.js
+        │       ├── jwt.utils.js
+        │       └── razorpay.utils.js
+        └── src/
+            ├── App.css
+            ├── App.tsx
+            ├── index.css
+            ├── main.tsx
+            ├── components/
+            │   ├── ProtectedRoute.tsx
+            │   ├── ThemeProvider.tsx
+            │   └── ui/
+            │       ├── accordion.tsx
+            │       ├── alert-dialog.tsx
+            │       ├── alert.tsx
+            │       ├── aspect-ratio.tsx
+            │       ├── avatar.tsx
+            │       ├── badge.tsx
+            │       ├── breadcrumb.tsx
+            │       ├── button-group.tsx
+            │       ├── button.tsx
+            │       ├── calendar.tsx
+            │       ├── card.tsx
+            │       ├── carousel.tsx
+            │       ├── chart.tsx
+            │       ├── checkbox.tsx
+            │       ├── collapsible.tsx
+            │       ├── command.tsx
+            │       ├── context-menu.tsx
+            │       ├── dialog.tsx
+            │       ├── drawer.tsx
+            │       ├── dropdown-menu.tsx
+            │       ├── empty.tsx
+            │       ├── field.tsx
+            │       ├── form.tsx
+            │       ├── hover-card.tsx
+            │       ├── input-group.tsx
+            │       ├── input-otp.tsx
+            │       ├── input.tsx
+            │       ├── item.tsx
+            │       ├── kbd.tsx
+            │       ├── label.tsx
+            │       ├── menubar.tsx
+            │       ├── navigation-menu.tsx
+            │       ├── pagination.tsx
+            │       ├── popover.tsx
+            │       ├── progress.tsx
+            │       ├── radio-group.tsx
+            │       ├── resizable.tsx
+            │       ├── scroll-area.tsx
+            │       ├── select.tsx
+            │       ├── separator.tsx
+            │       ├── sheet.tsx
+            │       ├── sidebar.tsx
+            │       ├── skeleton.tsx
+            │       ├── slider.tsx
+            │       ├── sonner.tsx
+            │       ├── spinner.tsx
+            │       ├── switch.tsx
+            │       ├── table.tsx
+            │       ├── tabs.tsx
+            │       ├── textarea.tsx
+            │       ├── toggle-group.tsx
+            │       ├── toggle.tsx
+            │       └── tooltip.tsx
+            ├── contexts/
+            │   └── AuthContext.tsx
+            ├── hooks/
+            │   └── use-mobile.ts
+            ├── layouts/
+            │   ├── AdminLayout.tsx
+            │   ├── CoordinatorLayout.tsx
+            │   ├── FacultyLayout.tsx
+            │   ├── MainLayout.tsx
+            │   └── StudentLayout.tsx
+            ├── lib/
+            │   └── utils.ts
+            ├── pages/
+            │   ├── ClubDetails.tsx
+            │   ├── Clubs.tsx
+            │   ├── EventDetails.tsx
+            │   ├── Events.tsx
+            │   ├── Home.tsx
+            │   ├── admin/
+            │   │   ├── AuditLogs.tsx
+            │   │   ├── Dashboard.tsx
+            │   │   ├── ManageClubs.tsx
+            │   │   ├── ManageUsers.tsx
+            │   │   ├── PendingEvents.tsx
+            │   │   └── PendingUsers.tsx
+            │   ├── auth/
+            │   │   ├── FacultySignup.tsx
+            │   │   ├── ForgotPassword.tsx
+            │   │   ├── Login.tsx
+            │   │   ├── ResetPassword.tsx
+            │   │   ├── StudentSignup.tsx
+            │   │   └── VerifyOTP.tsx
+            │   ├── coordinator/
+            │   │   ├── Attendance.tsx
+            │   │   ├── AttendanceList.tsx
+            │   │   ├── Dashboard.tsx
+            │   │   ├── Events.tsx
+            │   │   └── VerifyTicket.tsx
+            │   ├── faculty/
+            │   │   ├── CreateEvent.tsx
+            │   │   ├── Dashboard.tsx
+            │   │   ├── EventRegistrations.tsx
+            │   │   ├── ManageClub.tsx
+            │   │   └── ManageEvents.tsx
+            │   └── student/
+            │       ├── Dashboard.tsx
+            │       ├── MyRegistrations.tsx
+            │       ├── MyReviews.tsx
+            │       └── MyTickets.tsx
+            ├── services/
+            │   └── api.ts
+            └── types/
+                └── index.ts
+
 ```
 
 ---
